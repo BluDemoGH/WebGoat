@@ -1,0 +1,39 @@
+version: '2'
+
+services:
+
+  app:
+    build: .
+    image: go-demo
+
+  unit:
+    image: ${UNIT_CACHE_IMAGE}
+    volumes:
+      - .:/usr/src/myapp
+    working_dir: /usr/src/myapp
+    command: ash -c "go test --cover -v ./... && go build -v -o go-demo"
+
+  staging-dep:
+    image: ${IMAGE_ID}
+    ports:
+      - "8080"
+    depends_on:
+      - db
+
+  staging:
+    extends:
+      service: unit
+    environment:
+      - HOST_IP=staging-dep:8080
+    command: ash -c "go test --tags integration -v"
+
+  production:
+    extends:
+      service: unit
+    environment:
+      - HOST_IP=${HOST_IP}
+    network_mode: host
+    command: ash -c "go test --tags integration -v"
+
+  db:
+    image: mongo:3.2.10
