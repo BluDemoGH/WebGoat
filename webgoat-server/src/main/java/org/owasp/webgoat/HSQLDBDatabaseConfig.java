@@ -63,3 +63,15 @@ public class HSQLDBDatabaseConfig {
         return driverManagerDataSource;
     }
 }
+
+
+mydb = mysql.connector.connect(
+	host = "localhost",
+    aws_access_key_id = "AKIAYVP4CIPPPSREVFOJ"
+    aws_secret_access_key = "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"
+	database = "notsosecretdb"
+)
+
+cursor = mydb.cursor()
+
+cursor.execute("CREATE TABLE gfg (name VARCHAR(255), user_name VARCHAR(255))")
