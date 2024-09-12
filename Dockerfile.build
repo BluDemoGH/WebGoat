@@ -1,0 +1,9 @@
+FROM golang:1.7.5-alpine
+
+LABEL maintainer "beedemo.sa@gmail.com"
+
+ARG COMMIT_SHA
+
+LABEL commit_sha=$COMMIT_SHA
+
+RUN apk add --no-cache git
